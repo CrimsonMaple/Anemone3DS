@@ -200,7 +200,7 @@ Result get_splashes(Splash_s** splashes_list, int *splash_count)
 }
 
 void splash_delete() 
-{
+{ //Add check for CFW, and add removal of splash files. Possibly modify remove code to remove 2 objects instead of one.
     remove("/luma/splash.bin");
     remove("/luma/splashbottom.bin");
 }
@@ -209,56 +209,79 @@ void splash_install(Splash_s splash_to_install)
 {
     char *screen_buf = NULL;
     u32 size = 0;
+    splash splash_installed = TOP_SPLASH;
+    
     if (splash_to_install.is_zip)
     {
         size = zip_file_to_buf("splash.bin", splash_to_install.path, &screen_buf);
-        if (size)
+        size2 = zip_file_to_buf("splashbottom.bin", splash_to_install.path, &screen_buf);
+        
+        for (int i = 0; i < 2; i++)
         {
-            remake_file("/luma/splash.bin", ArchiveSD, sizeof(screen_buf));
-            buf_to_file(size, "/luma/splash.bin", ArchiveSD, screen_buf);
+            if (splash_installed = TOP_SPLASH)
+            {
+                if(size)
+                {
+                    remake_file("/luma/splash.bin", ArchiveSD, sizeof(screen_buf));
+                    buf_to_file(size, "/luma/splash.bin", ArchiveSD, screen_buf);
+                }
+            }
+            if (splash_installed = BOTTOM_SPLASH)
+            {
+                if(size2)
+                {
+                    remake_file("/luma/splashbottom.bin", ArchiveSD, sizeof(screen_buf));
+                    buf_to_file(size, "/luma/splashbottom.bin", ArchiveSD, screen_buf);
+                }
+            }
             free(screen_buf);
             screen_buf = NULL;
             size = 0;
+            
+            splash_installed = BOTTOM_SPLASH;
         }
-
-        size = zip_file_to_buf("splashbottom.bin", splash_to_install.path, &screen_buf);
-        if (size)
-        {
-            remake_file("/luma/splashbottom.bin", ArchiveSD, sizeof(screen_buf));
-            buf_to_file(size, "/luma/splashbottom.bin", ArchiveSD, screen_buf);
-            free(screen_buf);
-            screen_buf = NULL;
-            size = 0;
-        }
+        
     } else {
         u16 path[0x106] = {0};
-        memcpy(path, splash_to_install.path, 0x106 * sizeof(u16));
-        struacat(path, "/splash.bin");
-        size = file_to_buf(fsMakePath(PATH_UTF16, path), ArchiveSD, &screen_buf);
-        if (size)
+        for (int i = 0; i < 2; i++)
         {
-            remake_file("/luma/splash.bin", ArchiveSD, sizeof(screen_buf));
-            buf_to_file(size, "/luma/splash.bin", ArchiveSD, screen_buf);
+            memcpy(path, splash_to_install.path, 0x106 * sizeof(u16));
+            
+            if (splash_installed = TOP_SPLASH)
+            {
+                struacat(path, "/splash.bin");
+                size = file_to_buf(fsMakePath(PATH_UTF16, path), ArchiveSD, &screen_buf);
+                
+                if (size)
+                {
+                    remake_file("/luma/splash.bin", ArchiveSD, sizeof(screen_buf));
+                    buf_to_file(size, "/luma/splash.bin", ArchiveSD, screen_buf);
+                }
+            }
+            if (splash_installed = BOTTOM_SPLASH)
+            {
+                struacat(path, "/splashbottom.bin");
+                size = file_to_buf(fsMakePath(PATH_UTF16, path), ArchiveSD, &screen_buf);
+                
+                if (size)
+                {
+                    remake_file("/luma/splashbottom.bin", ArchiveSD, sizeof(screen_buf));
+                    buf_to_file(size, "/luma/splashbottom.bin", ArchiveSD, screen_buf);
+                }
+            }
+            
             free(screen_buf);
             screen_buf = NULL;
             size = 0;
         }
-
-        memcpy(path, splash_to_install.path, 0x106 * sizeof(u16));
-        struacat(path, "/splashbottom.bin");
-        size = file_to_buf(fsMakePath(PATH_UTF16, path), ArchiveSD, &screen_buf);
-        if (size)
-        {
-            remake_file("/luma/splashbottom.bin", ArchiveSD, sizeof(screen_buf));
-            buf_to_file(size, "/luma/splashbottom.bin", ArchiveSD, screen_buf);
-            free(screen_buf);
-            screen_buf = NULL;
-            size = 0;
-        }
+        
+        
+        
     }
 
     char *config_buf;
     size = file_to_buf(fsMakePath(PATH_ASCII, "/luma/config.bin"), ArchiveSD, &config_buf);
+    
     if (size)
     {
         if (config_buf[0xC] == 0)

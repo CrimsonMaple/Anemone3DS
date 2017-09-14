@@ -44,6 +44,7 @@
 
 #define ERROR	        0
 #define WARNING         1
+
 static const int THEMES_PER_SCREEN = 4;
 
 bool homebrew;
@@ -62,5 +63,17 @@ enum TextureID {
     TEXTURE_QR,
     TEXTURE_PREVIEW,
 };
+
+typedef enum splash {
+    TOP_SPLASH = 0;
+    BOTTOM_SPLASH
+}splash;
+
+typedef enum cfw {
+    LUMA = 0;
+    REINAND; // Using new paths for ReiNand, will only work on CrimsonMaple's Fork.
+    CORBENIK;
+    CAKES;
+}cfw;
 
 #endif
