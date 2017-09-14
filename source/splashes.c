@@ -207,7 +207,7 @@ void splash_delete()
 
 void splash_install(Splash_s splash_to_install)
 {
-    char *screen_buf = NULL;
+    char *screen_buf = NULL; // Unhardcode the splash paths.
     u32 size = 0;
     splash splash_installed = TOP_SPLASH;
     
@@ -238,14 +238,8 @@ void splash_install(Splash_s splash_to_install)
             screen_buf = NULL;
             size = 0;
             
-            if (splash_installed = TOP_SPLASH)
-            {
-                splash_installed = BOTTOM_SPLASH;
-            }
-            else
-            {
-                break;
-            }
+
+            splash_installed = BOTTOM_SPLASH;
         }
         
     } else {
@@ -281,14 +275,7 @@ void splash_install(Splash_s splash_to_install)
             screen_buf = NULL;
             size = 0;
             
-            if (splash_installed = TOP_SPLASH)
-            {
-                splash_installed = BOTTOM_SPLASH;
-            }
-            else
-            {
-                break;
-            }
+            splash_installed = BOTTOM_SPLASH;
         }
         
         
