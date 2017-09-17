@@ -40,7 +40,7 @@
 #define SHUFFLE_INSTALL 1
 #define BGM_INSTALL		2
 #define UNINSTALL		3
-#define DOWNLOADING     3
+#define DOWNLOADING     4
 
 #define ERROR	        0
 #define WARNING         1
@@ -48,7 +48,15 @@
 static const int THEMES_PER_SCREEN = 4;
 
 bool homebrew;
-bool splash_mode;
+
+enum Mode {
+    THEME_MODE,
+    SPLASH_MODE,
+    MENU_MODE,
+};
+
+enum Mode mode;
+int shuffle_theme_count;
 
 enum TextureID {
     TEXTURE_FONT_RESERVED = 0, //used by pp2d for the font
@@ -65,15 +73,14 @@ enum TextureID {
 };
 
 typedef enum splash {
-    TOP_SPLASH = 0;
+    TOP_SPLASH = 0,
     BOTTOM_SPLASH
 }splash;
 
 typedef enum cfw {
-    LUMA = 0;
-    REINAND; // Using new paths for ReiNand, will only work on CrimsonMaple's Fork.
-    CORBENIK;
-    CAKES;
+    LUMA = 0,
+    REINAND, // Using new paths for ReiNand, will only work on CrimsonMaple's Fork.
+    CORBENIK
 }cfw;
 
 #endif
