@@ -209,18 +209,15 @@ void splash_install(Splash_s splash_to_install)
 {
     char *screen_buf = NULL; // Unhardcode the splash paths.
     u32 size = 0;
-    u32 size2 = 0;
     splash splash_installed = TOP_SPLASH;
     
     if (splash_to_install.is_zip)
     {
-        size = zip_file_to_buf("splash.bin", splash_to_install.path, &screen_buf);
-        size2 = zip_file_to_buf("splashbottom.bin", splash_to_install.path, &screen_buf);
-        
         for (int i = 0; i < 2; i++)
         {
             if (splash_installed = TOP_SPLASH)
             {
+                size = zip_file_to_buf("splash.bin", splash_to_install.path, &screen_buf);
                 if(size)
                 {
                     remake_file("/luma/splash.bin", ArchiveSD, sizeof(screen_buf));
@@ -229,7 +226,8 @@ void splash_install(Splash_s splash_to_install)
             }
             if (splash_installed = BOTTOM_SPLASH)
             {
-                if(size2)
+                size = zip_file_to_buf("splashbottom.bin", splash_to_install.path, &screen_buf);
+                if(size)
                 {
                     remake_file("/luma/splashbottom.bin", ArchiveSD, sizeof(screen_buf));
                     buf_to_file(size, "/luma/splashbottom.bin", ArchiveSD, screen_buf);
