@@ -219,7 +219,7 @@ int main(void)
                 single_install(*current_theme);
             } else if (mode == MENU_MODE)
             {
-                call_menu(entries, selected_entry);
+                call_menu(entries, menu_count, selected_entry, last_mode, themes_list, splashes_list, selected_theme, selected_splash);
             }
         }
         

@@ -460,7 +460,7 @@ void draw_menu(menu_entry *entries, int menu_count, int menu_selected, enum Mode
     pp2d_end_draw();
 }
 
-void call_menu(menu_entry *entries, int menu_selected)
+void call_menu(menu_entry *entries, int menu_count, int menu_selected, enum Mode last_mode, Theme_s *themes, Splash_s *splashes, int selected_theme, int selected_splash)
 {
     switch (entries[menu_selected].id)
     {
