@@ -372,9 +372,53 @@ int init_menu(menu_entry **entries)
     return menu_count;
 }
 
-void draw_menu(menu_entry *entries, int menu_count, int menu_selected)
+void draw_menu(menu_entry *entries, int menu_count, int menu_selected, enum Mode last_mode, Theme_s *themes, Splash_s *splashes, int selected_theme, int selected_splash)
 {
     draw_base_interface();
+
+    wchar_t title[0x40] = {0};
+    wchar_t author[0x40] = {0};
+    wchar_t description[0xa6] = {0};
+    bool parsed = false;
+    if (last_mode == SPLASH_MODE && splashes != NULL)
+    {
+        Splash_s current_splash = splashes[selected_splash];
+        pp2d_draw_text_center(GFX_TOP, 4, 0.5, 0.5, COLOR_WHITE, "Splash mode");
+        utf16_to_utf32((u32*)title, current_splash.name, 0x40);
+        utf16_to_utf32((u32*)author, current_splash.author, 0x40);
+        utf16_to_utf32((u32*)description, current_splash.desc, 0xb0);
+
+        pp2d_draw_wtext_center(GFX_TOP, 180, 0.7, 0.7, COLOR_WHITE, L"\uE000 Install Splash    \uE004 Switch to Themes");
+        pp2d_draw_wtext_center(GFX_TOP, 210, 0.7, 0.7, COLOR_WHITE, L"\uE002 Delete current Splash");
+        pp2d_draw_wtext_center(GFX_TOP, 150, 0.7, 0.7, COLOR_WHITE, L"\uE003 Preview Splash     \uE005 Scan QRCode");
+        pp2d_draw_wtext(130, 120, 0.6, 0.6, COLOR_WHITE, L"");
+        parsed = true;
+    } else if (last_mode == THEME_MODE && themes != NULL)
+    {
+        Theme_s current_theme = themes[selected_theme];
+        pp2d_draw_text_center(GFX_TOP, 4, 0.5, 0.5, COLOR_WHITE, "Theme mode");
+        utf16_to_utf32((u32*)title, current_theme.name, 0x40);
+        utf16_to_utf32((u32*)author, current_theme.author, 0x40);
+        utf16_to_utf32((u32*)description, current_theme.desc, 0xb0);
+
+        pp2d_draw_wtext(20, 150, 0.6, 0.6, COLOR_WHITE, L"\uE046 Install Shuffle Theme");
+        pp2d_draw_wtext(200, 150, 0.6, 0.6, COLOR_WHITE, L"\uE004 Switch to Splashes");
+        pp2d_draw_wtext(20, 180, 0.6, 0.6, COLOR_WHITE, L"\uE000 Install Theme");
+        pp2d_draw_wtext(200, 180, 0.6, 0.6, COLOR_WHITE, L"\uE001 Queue Shuffle");
+        pp2d_draw_wtext(20, 210, 0.6, 0.6, COLOR_WHITE, L"\uE002 Install BGM");
+        pp2d_draw_wtext(200, 210, 0.6, 0.6, COLOR_WHITE, L"\uE003 Preview Theme");
+        pp2d_draw_wtext(130, 120, 0.6, 0.6, COLOR_WHITE, L"\uE005 Scan QRCode");
+        parsed = true;
+    }
+
+    if (parsed)
+    {
+        pp2d_draw_wtext_wrap(20, 30, 0.7, 0.7, COLOR_WHITE, 380, title);
+        pp2d_draw_wtext_wrap(20, 65, 0.5, 0.5, COLOR_WHITE, 363, description);
+        pp2d_draw_text(20, 50, 0.5, 0.5, COLOR_WHITE, "By: ");
+        pp2d_draw_wtext_wrap(44, 50, 0.5, 0.5, COLOR_WHITE, 380, author);
+    }
+
     pp2d_draw_on(GFX_BOTTOM);
     int vertical_scroll = 0;
 

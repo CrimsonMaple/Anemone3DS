@@ -118,7 +118,7 @@ int main(void)
             draw_splash_interface(splashes_list, splash_count, selected_splash, preview_mode);
         } else if (mode == MENU_MODE)
         {
-            draw_menu(entries, menu_count, selected_entry);
+            draw_menu(entries, menu_count, selected_entry, last_mode, themes_list, splashes_list, selected_theme, selected_splash);
         }
         
         if (kDown & KEY_START)
