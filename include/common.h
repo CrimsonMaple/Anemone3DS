@@ -40,7 +40,7 @@
 #define SHUFFLE_INSTALL 1
 #define BGM_INSTALL		2
 #define UNINSTALL		3
-#define DOWNLOADING     3
+#define DOWNLOADING     4
 
 #define ERROR	        0
 #define WARNING         1

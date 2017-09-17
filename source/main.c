@@ -270,6 +270,10 @@ int main(void)
                 selected_theme++;
                 if (selected_theme >= theme_count)
                     selected_theme = 0;
+            } else if (mode == MENU_MODE) {
+                selected_entry++;
+                if (selected_entry >= menu_count)
+                    selected_entry = 0;
             }
         }
         else if (kDown & KEY_UP)
@@ -283,6 +287,10 @@ int main(void)
                 selected_theme--;
                 if (selected_theme < 0)
                     selected_theme = theme_count - 1;
+            } else if (mode == MENU_MODE) {
+                selected_entry--;
+                if (selected_entry < 0)
+                    selected_entry = menu_count - 1;
             }
         }
         // Quick moving

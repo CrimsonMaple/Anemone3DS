@@ -150,6 +150,9 @@ void draw_theme_install(int install_type)
             pp2d_draw_text_center(GFX_TOP, 120, 0.8, 0.8, COLOR_WHITE, "Installing BGM...");
             break;
         case 3:
+            pp2d_draw_text_center(GFX_TOP, 120, 0.8, 0.8, COLOR_WHITE, "Deleting theme...");
+            break;
+        case 4:
             pp2d_draw_text_center(GFX_TOP, 120, 0.8, 0.8, COLOR_WHITE, "Downloading...");
             break;
         default:
@@ -366,9 +369,14 @@ void draw_splash_interface(Splash_s *splashes_list, int splash_count, int select
 
 int init_menu(menu_entry **entries)
 {
-    int menu_count = 1;
-    *entries = malloc(sizeof(menu_entry) * menu_count);
-    *entries[0] = (menu_entry) {"Quit", 1};
+    int menu_count = 2;
+    *entries = malloc(sizeof(menu_entry*) * menu_count);
+    menu_entry *temp = &(*entries)[0];
+    temp->name = "Quit";
+    temp->id = 1;
+    temp = &(*entries)[1];
+    temp->name = "Delete Current Theme";
+    temp->id = 2;
     return menu_count;
 }
 
@@ -469,6 +477,11 @@ void call_menu(menu_entry *entries, int menu_count, int menu_selected, enum Mode
                 APT_HardwareResetAsync();
             else
                 srvPublishToSubscriber(0x202, 0);
+            break;
+        case 2:
+            draw_theme_install(UNINSTALL);
+            del_theme(themes[selected_theme].path);
+            // get_themes(&themes_list, &theme_count);
             break;
     }
 }
