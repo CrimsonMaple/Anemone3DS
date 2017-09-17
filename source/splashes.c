@@ -209,6 +209,7 @@ void splash_install(Splash_s splash_to_install)
 {
     char *screen_buf = NULL; // Unhardcode the splash paths.
     u32 size = 0;
+    u32 size2 = 0;
     splash splash_installed = TOP_SPLASH;
     
     if (splash_to_install.is_zip)
